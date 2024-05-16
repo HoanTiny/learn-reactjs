@@ -1,5 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
+import TodoFeature from "./features/Todo";
+import AlbumFeature from "./features/Album";
 
 function App() {
   return (
@@ -7,6 +9,8 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>HOÀN TINY</p>
+        <TodoFeature />
+        <AlbumFeature />
       </header>
     </div>
   );
