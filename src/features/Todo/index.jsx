@@ -1,19 +1,18 @@
 import React from "react";
-import PropTypes from "prop-types";
-import TodoList from "./components/TodoList";
+import { Link, Outlet } from "react-router-dom";
 
 TodoFeature.propTypes = {};
 
-function TodoFeature(props) {
-  const todoList = [
-    { id: 1, title: "Eat" },
-    { id: 2, title: "Sleep" },
-    { id: 3, title: "Code" },
-  ];
+function TodoFeature() {
   return (
     <div>
-      <h3>Todo List</h3>
-      <TodoList todoList={todoList} />
+      <nav>
+        <Link to="listpage">List Page</Link>
+      </nav>
+      <nav>
+        <Link to="detail-page">Detail Page</Link>
+      </nav>
+      <Outlet />
     </div>
   );
 }
