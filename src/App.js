@@ -1,12 +1,14 @@
-import { Routes, Route, Link } from "react-router-dom";
-import "./App.css";
-import AlbumFeature from "./features/Album";
-import TodoFeature from "./features/Todo";
-import NotFound from "./components/NotFound";
-import ListPage from "./features/Todo/pages/ListPage";
-import DetailPage from "./features/Todo/pages/DetailPage";
 import { useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
 import productApi from "./api/productApi";
+import Header from "./components/Header";
+import NotFound from "./components/NotFound";
+import AlbumFeature from "./features/Album";
+import CounterFeature from "./features/Counter";
+import TodoFeature from "./features/Todo";
+import DetailPage from "./features/Todo/pages/DetailPage";
+import ListPage from "./features/Todo/pages/ListPage";
 
 function App() {
   useEffect(() => {
@@ -22,12 +24,10 @@ function App() {
   });
   return (
     <div className="App">
-      <h1>HOÀN</h1>
-      <Link to="/todos">Todo</Link>
-      <Link to="/albums">Albums</Link>
-      <br />
+      <Header />
+
       <Routes>
-        <Route path="/" />
+        <Route path="/" element={<CounterFeature />} />
         <Route path="/todos" element={<TodoFeature />}>
           <Route path="listpage" element={<ListPage />}></Route>
           <Route path="detail-page" element={<DetailPage />}></Route>
