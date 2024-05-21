@@ -1,3 +1,4 @@
+import { AccountCircle, Close } from "@mui/icons-material";
 import AdbIcon from "@mui/icons-material/Adb";
 import LogoDevIcon from "@mui/icons-material/LogoDev";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -6,7 +7,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
@@ -15,14 +15,27 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { Link, NavLink } from "react-router-dom";
+import Login from "../../features/Auth/components/Login";
 import Register from "../../features/Auth/components/Register";
 import "./styles.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../features/Auth/userSlice";
 
 const pages = ["todos", "albums"];
 
+const MODE = {
+  LOGIN: "login",
+  REGISTER: "register",
+};
+
 function Header() {
+  const dispatch = useDispatch();
+  const loggedInUser = useSelector((state) => state.user.current);
+  const isLoggedIn = !!loggedInUser.id;
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [open, setOpen] = React.useState(false);
+  const [mode, setMode] = React.useState(MODE.LOGIN);
+  const [anchorEl, setAnchorElMenu] = React.useState(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,6 +51,18 @@ function Header() {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const handleClickMenu = (event) => {
+    setAnchorElMenu(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorElMenu(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   return (
@@ -131,22 +156,74 @@ function Header() {
               ))}
             </Box>
 
-            <Box sx={{ flexGrow: 0 }}>
-              <Button color="inherit" onClick={handleClickOpen}>
-                Register
-              </Button>
-            </Box>
+            {!isLoggedIn && (
+              <Box sx={{ flexGrow: 0 }}>
+                <Button color="inherit" onClick={handleClickOpen}>
+                  Login
+                </Button>
+              </Box>
+            )}
+            {isLoggedIn && (
+              <IconButton color="inherit" onClick={handleClickMenu}>
+                <AccountCircle />
+              </IconButton>
+            )}
+
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleCloseMenu}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
           </Toolbar>
         </Container>
       </AppBar>
 
       <Dialog open={open} disableEscapeKeyDown>
+        <IconButton
+          onClick={handleClose}
+          sx={{ position: "absolute", top: "10px", right: "10px" }}
+        >
+          <Close />
+        </IconButton>
         <DialogContent>
-          <Register />
+          {mode === MODE.REGISTER && (
+            <>
+              <Register closeDialog={handleClose} />
+
+              <Box textAlign="center">
+                <Button
+                  onClick={() => setMode(MODE.LOGIN)}
+                  sx={{ mt: 2 }}
+                  color="primary"
+                >
+                  Already have an account. Login here
+                </Button>
+              </Box>
+            </>
+          )}
+
+          {mode === MODE.LOGIN && (
+            <>
+              <Login closeDialog={handleClose} />
+
+              <Box textAlign="center">
+                <Button
+                  onClick={() => setMode(MODE.REGISTER)}
+                  sx={{ mt: 2 }}
+                  color="primary"
+                >
+                  Don't have an account. Register here
+                </Button>
+              </Box>
+            </>
+          )}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-        </DialogActions>
       </Dialog>
     </div>
   );
