@@ -1,0 +1,17 @@
+.category-list {
+  list-style: none;
+  padding-left: 0;
+  text-align: left;
+
+  .category-item {
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-style: "Roboto", sans-serif;
+    font-size: 14px;
+    border-radius: 6px;
+    // &:hover {
+    //   background-color: #e6e6e6;
+    // }
+  }
+}

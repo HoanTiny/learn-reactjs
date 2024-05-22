@@ -8,7 +8,6 @@ ProductList.propTypes = {
 };
 
 function ProductList({ data = [] }) {
-  console.log(`data`, data);
   return (
     <Box>
       <Grid container>

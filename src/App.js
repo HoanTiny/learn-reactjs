@@ -11,18 +11,6 @@ import DetailPage from "./features/Todo/pages/DetailPage";
 import ListPage from "./features/Todo/pages/ListPage";
 
 function App() {
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     const params = {
-  //       _limit: 10,
-  //     };
-  //     const productList = await productApi.getAll(params);
-  //     console.log(`productList`, productList);
-  //   };
-
-  //   fetchProducts();
-  // });
-
   return (
     <div className="App">
       <Header />
