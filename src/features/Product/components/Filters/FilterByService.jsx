@@ -1,7 +1,6 @@
-import React from "react";
+import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import { Box, FormControlLabel, Typography } from "@mui/material";
-import { CheckBox } from "@mui/icons-material";
+import React from "react";
 
 FilterByService.propTypes = {
   filters: PropTypes.object,
@@ -9,9 +8,13 @@ FilterByService.propTypes = {
 };
 
 function FilterByService({ filters = {}, onChange }) {
-  console.log(filters);
+  console.log(12212121, filters);
   const handleChange = (e) => {
+    if (!onChange) {
+      return;
+    }
     const { name, checked } = e.target;
+    console.log(name);
     onChange({ [name]: checked });
   };
 
@@ -21,18 +24,28 @@ function FilterByService({ filters = {}, onChange }) {
         Dịch vụ
       </Typography>
 
-      <ul>
-        {["isPromotion", "isFreeShip"].map((service, index) => (
-          <li key={index}>
+      <ul
+        style={{
+          listStyle: "none",
+          paddingLeft: "0px",
+        }}
+      >
+        {[
+          { value: "isPromotion", label: "Có khuyến mãi" },
+          { value: "isFreeShip", label: "Vận chuyển miễn phí" },
+        ].map((service) => (
+          <li key={service.value}>
+            {filters[service]}
             <FormControlLabel
               control={
-                <CheckBox
-                  checked={filters[service]}
+                <Checkbox
+                  checked={Boolean(filters[service.value])}
                   onChange={handleChange}
-                  name={service}
+                  name={service.value}
                   color="primary"
                 />
               }
+              label={service.label}
             />
           </li>
         ))}
