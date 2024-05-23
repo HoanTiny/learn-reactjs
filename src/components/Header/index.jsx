@@ -21,7 +21,7 @@ import "./styles.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../features/Auth/userSlice";
 
-const pages = ["todos", "albums"];
+const pages = ["todos", "albums", "products"];
 
 const MODE = {
   LOGIN: "login",
