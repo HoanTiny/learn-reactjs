@@ -8,13 +8,11 @@ FilterByService.propTypes = {
 };
 
 function FilterByService({ filters = {}, onChange }) {
-  console.log(12212121, filters);
   const handleChange = (e) => {
     if (!onChange) {
       return;
     }
     const { name, checked } = e.target;
-    console.log(name);
     onChange({ [name]: checked });
   };
 

@@ -64,14 +64,12 @@ const LIST_FILTERS = [
     isRemovable: true,
     onRemove: (filters) => {
       const newFilters = { ...filters };
-      console.log(`name`, newFilters);
       if (
         newFilters.hasOwnProperty("category.name") &&
         newFilters.hasOwnProperty("category.id")
       ) {
         delete newFilters["category.name"];
         delete newFilters["category.id"];
-        console.log("New filters", newFilters);
         return newFilters;
       }
     },
@@ -84,7 +82,6 @@ function FilterViewer({ filters, onChange }) {
     return LIST_FILTERS.filter((x) => x.isVisible(filters));
   }, [filters]);
 
-  console.log(`LIST_FILTERS`, LIST_FILTERS);
   return (
     <div
       style={{
@@ -108,7 +105,6 @@ function FilterViewer({ filters, onChange }) {
               ? () => {
                   if (!onChange) return;
                   const newFilters = x.onRemove(filters);
-                  console.log(444444444, newFilters);
                   onChange(newFilters);
                 }
               : null
