@@ -7,8 +7,9 @@ import CounterFeature from "./features/Counter";
 import ProductFeature from "./features/Product";
 import ProductListPage from "./features/Product/pages/ProductListPage";
 import TodoFeature from "./features/Todo";
-import DetailPage from "./features/Todo/pages/DetailPage";
+// import DetailPage from "./features/Todo/pages/DetailPage";
 import ListPage from "./features/Todo/pages/ListPage";
+import DetailPage from "./features/Product/pages/DetailPage";
 
 function App() {
   return (
@@ -22,7 +23,12 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/products" element={<ProductFeature />}>
-          <Route path="" element={<ProductListPage />} />
+          <Route index element={<ProductListPage />}></Route>
+          <Route path=":id" element={<DetailPage />}>
+            <Route path="description" />
+            <Route path="additional" />
+            <Route path="reviews" />
+          </Route>
         </Route>
         <Route path="/albums" element={<AlbumFeature />} />
         <Route path="*" element={<NotFound />} />

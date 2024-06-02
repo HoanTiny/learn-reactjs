@@ -64,7 +64,6 @@ const LIST_FILTERS = [
     isRemovable: true,
     onRemove: (filters) => {
       const newFilters = { ...filters };
-      console.log(`name`, newFilters);
       if (
         newFilters.hasOwnProperty("category.name") &&
         newFilters.hasOwnProperty("category.id")
@@ -84,7 +83,6 @@ function FilterViewer({ filters, onChange }) {
     return LIST_FILTERS.filter((x) => x.isVisible(filters));
   }, [filters]);
 
-  console.log(`LIST_FILTERS`, LIST_FILTERS);
   return (
     <div
       style={{
