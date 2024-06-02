@@ -70,7 +70,6 @@ const LIST_FILTERS = [
       ) {
         delete newFilters["category.name"];
         delete newFilters["category.id"];
-        console.log("New filters", newFilters);
         return newFilters;
       }
     },
@@ -106,7 +105,6 @@ function FilterViewer({ filters, onChange }) {
               ? () => {
                   if (!onChange) return;
                   const newFilters = x.onRemove(filters);
-                  console.log(444444444, newFilters);
                   onChange(newFilters);
                 }
               : null

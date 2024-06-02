@@ -13,7 +13,6 @@ function FilterByService({ filters = {}, onChange }) {
       return;
     }
     const { name, checked } = e.target;
-    console.log(name);
     onChange({ [name]: checked });
   };
 
