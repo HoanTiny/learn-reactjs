@@ -14,13 +14,15 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Login from "../../features/Auth/components/Login";
 import Register from "../../features/Auth/components/Register";
 import "./styles.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../features/Auth/userSlice";
-
+import { cartItemsCountSelector } from "../../features/Cart/selectors";
+import { Badge } from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 const pages = ["todos", "albums", "products"];
 
 const MODE = {
@@ -29,9 +31,11 @@ const MODE = {
 };
 
 function Header() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.current);
   const isLoggedIn = !!loggedInUser.id;
+  const cartItemsCount = useSelector(cartItemsCountSelector);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [mode, setMode] = React.useState(MODE.LOGIN);
@@ -63,6 +67,10 @@ function Header() {
 
   const handleLogout = () => {
     dispatch(logout());
+  };
+
+  const handleCartClick = () => {
+    navigate("/cart");
   };
 
   return (
@@ -155,7 +163,16 @@ function Header() {
                 </NavLink>
               ))}
             </Box>
-
+            <IconButton
+              size="large"
+              aria-label="show 17 new notifications"
+              color="inherit"
+              onClick={handleCartClick}
+            >
+              <Badge badgeContent={cartItemsCount} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
             {!isLoggedIn && (
               <Box sx={{ flexGrow: 0 }}>
                 <Button color="inherit" onClick={handleClickOpen}>
