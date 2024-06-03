@@ -1,24 +1,33 @@
-import { Box, Container, Grid, Paper } from "@mui/material";
+import { Box, Container, Grid, Paper, LinearProgress } from "@mui/material";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import Productthumbnail from "../components/Productthumbnail";
 import useProductDetail from "../hooks/useProductDetail";
 import ProductInfo from "../components/ProductInfo";
 import AddToCartForm from "../components/AddToCartForm";
 import ProductMenu from "../components/ProductMenu";
-
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../Cart/cartSlice";
 function DetailPage() {
   const { id } = useParams();
-
   const { product, loading } = useProductDetail(id);
-  console.log(`product`, product);
+  const dispatch = useDispatch();
 
   if (loading) {
-    return <Box>Loading</Box>;
+    return (
+      <Box>
+        <LinearProgress />
+      </Box>
+    );
   }
 
   const handleAddToCartSubmit = (formValues) => {
-    console.log(`Form submit`, formValues);
+    const action = addToCart({
+      id: product.id,
+      product: product,
+      quantity: formValues.quantity,
+    });
+    dispatch(action);
   };
   return (
     <Box>
@@ -48,6 +57,8 @@ function DetailPage() {
           </Grid>
         </Paper>
         <ProductMenu />
+
+        <Outlet context={{ ...product }} />
       </Container>
     </Box>
   );

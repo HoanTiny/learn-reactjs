@@ -10,6 +10,10 @@ import TodoFeature from "./features/Todo";
 // import DetailPage from "./features/Todo/pages/DetailPage";
 import ListPage from "./features/Todo/pages/ListPage";
 import DetailPage from "./features/Product/pages/DetailPage";
+import ProductDescription from "./features/Product/components/ProductDescription";
+import ProductAdditional from "./features/Product/components/ProductAdditional";
+import ProductReview from "./features/Product/components/ProductReview";
+import CartFeature from "./features/Cart";
 
 function App() {
   return (
@@ -25,11 +29,12 @@ function App() {
         <Route path="/products" element={<ProductFeature />}>
           <Route index element={<ProductListPage />}></Route>
           <Route path=":id" element={<DetailPage />}>
-            <Route path="description" />
-            <Route path="additional" />
-            <Route path="reviews" />
+            <Route path="description" element={<ProductDescription />} />
+            <Route path="additional" element={<ProductAdditional />} />
+            <Route path="reviews" element={<ProductReview />} />
           </Route>
         </Route>
+        <Route path="/cart" element={<CartFeature />} />
         <Route path="/albums" element={<AlbumFeature />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

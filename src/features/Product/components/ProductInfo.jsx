@@ -1,5 +1,4 @@
 import React from "react";
-import "./productInfo.scss";
 import PropTypes from "prop-types";
 import { Box, Typography } from "@mui/material";
 import { formatPrice } from "../../../utils";
