@@ -1,7 +1,10 @@
 import { AccountCircle, Close } from "@mui/icons-material";
 import AdbIcon from "@mui/icons-material/Adb";
+import DoneIcon from "@mui/icons-material/Done";
 import LogoDevIcon from "@mui/icons-material/LogoDev";
 import MenuIcon from "@mui/icons-material/Menu";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Badge, Grid } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -14,15 +17,15 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Login from "../../features/Auth/components/Login";
 import Register from "../../features/Auth/components/Register";
-import "./styles.scss";
-import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../features/Auth/userSlice";
 import { cartItemsCountSelector } from "../../features/Cart/selectors";
-import { Badge } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import CloseIcon from "@mui/icons-material/Close";
+import "./styles.scss";
+import { hideMiniCart } from "../../features/Cart/cartSlice";
 const pages = ["todos", "albums", "products"];
 
 const MODE = {
@@ -40,6 +43,8 @@ function Header() {
   const [open, setOpen] = React.useState(false);
   const [mode, setMode] = React.useState(MODE.LOGIN);
   const [anchorEl, setAnchorElMenu] = React.useState(null);
+  const state = useSelector((state) => state.cart.showMiniCart);
+  console.log(`state`, state);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -71,6 +76,11 @@ function Header() {
 
   const handleCartClick = () => {
     navigate("/cart");
+  };
+
+  const handleCloseMiniart = () => {
+    const closeMinicart = hideMiniCart();
+    dispatch(closeMinicart);
   };
 
   return (
@@ -169,10 +179,86 @@ function Header() {
               color="inherit"
               onClick={handleCartClick}
             >
-              <Badge badgeContent={cartItemsCount} color="error">
+              <Badge
+                badgeContent={cartItemsCount}
+                color="error"
+                sx={{ position: "relative" }}
+              >
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
+            {state && (
+              <>
+                <Grid
+                  container
+                  direction="column"
+                  justifyContent="center"
+                  alignItems="center"
+                  component="div"
+                  sx={{
+                    position: "absolute",
+                    background: "rgb(255, 255, 255)",
+                    color: "#000",
+                    top: "50px",
+                    right: "52px",
+                    padding: "12px",
+                    fontSize: "0.8rem",
+                    width: "240px",
+                    borderRadius: "6px",
+                    boxShadow: "rgb(179, 179, 179) 1px 1px 15px",
+                  }}
+                >
+                  <CloseIcon
+                    sx={{
+                      position: "absolute",
+                      top: 2,
+                      right: 3,
+                      color: "rgb(155, 155, 155)",
+                      fontSize: "18px",
+                      padding: "4px",
+                      cursor: "pointer",
+                    }}
+                    onClick={handleCloseMiniart}
+                  />
+                  <Grid
+                    sx={{
+                      fontSize: "14px",
+                    }}
+                  >
+                    <DoneIcon
+                      sx={{
+                        color: "#15ff00",
+                        fontSize: "1rem",
+                        width: "16px",
+                        height: "16px",
+                        borderRadius: "50%",
+                        marginRight: "8px",
+                      }}
+                    />
+                    Product added to cart
+                  </Grid>
+
+                  <Grid>
+                    <Box
+                      sx={{
+                        padding: "10px 4px",
+                        marginTop: "16px",
+                        backgroundColor: "rgb(255, 57, 69)",
+                        color: "rgb(255, 255, 255)",
+                        borderRadius: "6px",
+                        // width: "100%",
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        cursor: "pointer",
+                      }}
+                      onClick={handleCartClick}
+                    >
+                      Xem giỏ hàng và thanh toán
+                    </Box>
+                  </Grid>
+                </Grid>
+              </>
+            )}
             {!isLoggedIn && (
               <Box sx={{ flexGrow: 0 }}>
                 <Button color="inherit" onClick={handleClickOpen}>

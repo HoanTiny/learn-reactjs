@@ -19,7 +19,6 @@ const counterSlice = createSlice({
     addToCart(state, action) {
       const newItem = action.payload;
       const index = state.cartItems.findIndex((x) => x.id === newItem.id);
-
       if (index >= 0) {
         state.cartItems[index].quantity += newItem.quantity;
       } else {
