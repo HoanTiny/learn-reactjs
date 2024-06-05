@@ -5,8 +5,9 @@ const counterSlice = createSlice({
   name: "cart", // Name of the slice
   initialState: {
     showMiniCart: false,
-    cartItems: [],
+    cartItems: JSON.parse(localStorage.getItem("cart")) || [],
   },
+
   reducers: {
     showMiniCart(state) {
       state.showMiniCart = true;
