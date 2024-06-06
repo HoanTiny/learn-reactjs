@@ -1,4 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useSnackbar } from "notistack";
 import { Button } from "@mui/material";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
@@ -10,6 +11,7 @@ AddToCartForm.propTypes = {
 };
 
 function AddToCartForm({ onSubmit = null }) {
+  const { enqueueSnackbar } = useSnackbar();
   const schema = yup.object({
     quantity: yup
       .number()
@@ -26,8 +28,11 @@ function AddToCartForm({ onSubmit = null }) {
   });
 
   const handleSubmit = async (values) => {
-    if (onSubmit) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (onSubmit && user) {
       await onSubmit(values);
+    } else {
+      enqueueSnackbar("Bạn cần đăng nhập để tiếp tục", { variant: "error" });
     }
 
     // form.reset();

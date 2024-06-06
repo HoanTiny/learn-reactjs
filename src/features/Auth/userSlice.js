@@ -35,7 +35,9 @@ const userSlice = createSlice({
       // Clear the storage
       localStorage.removeItem(StorageKeys.USER);
       localStorage.removeItem(StorageKeys.TOKEN);
-
+      if (localStorage.getItem(StorageKeys.CART)) {
+        localStorage.removeItem(StorageKeys.CART);
+      }
       state.current = {};
     },
   },

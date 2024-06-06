@@ -1,14 +1,34 @@
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { Box, FormControlLabel, Grid, IconButton, Input } from "@mui/material";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import {
+  Box,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  Input,
+  Modal,
+} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { STATIC_HOST, THUMBNAIL_PLACEHOLDER } from "../../../constants/common";
 import { formatPrice } from "../../../utils";
-import { setQuantity } from "../cartSlice";
+import { removeFromCart, setQuantity } from "../cartSlice";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};
+
 ItemCart.propTypes = {
   product: PropTypes.object,
 };
@@ -16,6 +36,9 @@ ItemCart.propTypes = {
 function ItemCart({ product, quantity }) {
   const [itemCount, setItemCount] = useState(quantity);
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const thumbnailUrl = product.thumbnail
     ? `${STATIC_HOST}${product.thumbnail?.url}`
     : `${THUMBNAIL_PLACEHOLDER}`;
@@ -67,6 +90,12 @@ function ItemCart({ product, quantity }) {
       setItemCount(Number(e.target.value));
       dispatch(setCountItem);
     }
+  };
+
+  const handleDelete = () => {
+    const deleteItem = removeFromCart(product.id);
+    console.log(`deleteItem`, deleteItem);
+    dispatch(deleteItem);
   };
   return (
     <Box padding="20px">
@@ -213,10 +242,67 @@ function ItemCart({ product, quantity }) {
             {formatPrice(product.salePrice * quantity)}
           </Grid>
           <Grid item xs={1}>
-            <DeleteIcon />
+            <DeleteIcon
+              onClick={handleOpen}
+              sx={{
+                cursor: "pointer",
+              }}
+            />
           </Grid>
         </Grid>
       </Grid>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <h2 id="modal-modal-title">
+            <WarningAmberIcon
+              sx={{
+                color: "red",
+                fontSize: "30px",
+                marginRight: "10px",
+              }}
+            />
+            Delete Item
+          </h2>
+          <p id="modal-modal-description">
+            Are you sure you want to delete this item?
+          </p>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <button
+              onClick={handleClose}
+              style={{
+                marginRight: "10px",
+                borderRadius: "5px",
+                cursor: "pointer",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDelete}
+              style={{
+                backgroundColor: "red",
+                color: "white",
+                borderRadius: "5px",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+                cursor: "pointer",
+              }}
+            >
+              Delete
+            </button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 }

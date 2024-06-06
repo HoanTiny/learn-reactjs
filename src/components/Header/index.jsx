@@ -72,6 +72,7 @@ function Header() {
 
   const handleLogout = () => {
     dispatch(logout());
+    window.location.reload();
   };
 
   const handleCartClick = () => {
